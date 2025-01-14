@@ -18,7 +18,7 @@ npm install pg progress
 - all table- and field names are in lowercase singular snake
 - a field with samme name as another tables is foreign key to id an that table.
 
-Fixrelations outputs markdown. It illustrates together with a2pg.jpg how foreign keys can be changed from relate to origid to relate to id. Make the info by:
+File fixrelations.js outputs markdown. It illustrates together with a2pg.jpg how foreign keys can be changed from relate to origid to relate to id. Make the info by:
 ```
 $ ./fixRelations.js >fixRelations.md
 ```
