@@ -1,6 +1,6 @@
-const { Pool } = require('pg');
-const ProgressBar = require('progress');
-
+import ProgressBar from 'progress';
+import pg from 'pg';
+const { Pool } = pg;
 
 const pool = new Pool({
     	user: 'bvirk',
@@ -10,20 +10,20 @@ const pool = new Pool({
     	database: 'bvirk',
 });
 
-async function pgSql(sqlArrArr,verbose=false, permitSql=false) {
+export async function pgSql(sqlArrArr,verbose=false, permitSql=false) {
+    
     let client;
     try {
         client = await pool.connect();
     
-        for (sqlArr of sqlArrArr) {
+        for (const sqlArr of sqlArrArr) {
 
             const table =getTable(sqlArr[0])
             if (table) {
-                console.log("table: %s",table)
                 sqlArr.unshift(`drop table if exists ${table}`);
             }
             const bar = new ProgressBar(' sqls [:bar] :current inserts', { incomplete: ' ', total: sqlArr.length });
-            for (sql of sqlArr) {
+            for (const sql of sqlArr) {
                 try {
                     await client.query(sql);
                     bar.tick();
@@ -33,10 +33,11 @@ async function pgSql(sqlArrArr,verbose=false, permitSql=false) {
             }
         }
     } catch (err) {
-        console.log(err.message);
+        console.log(err);
     } finally {
         client.release();
     }
+  
 }
 
 function getTable(sqlCreateTable) {
@@ -47,4 +48,3 @@ function getTable(sqlCreateTable) {
         ? leadWords[2] : undefined;
 }
 
-module.exports = pgSql;

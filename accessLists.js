@@ -1,5 +1,5 @@
 
-const fldTypes = {
+export const fldTypes = {
 	"1":["dbBoolean","boolean"],
 	"2":["dbByte",""],
 	"3":["dbInteger","smallint"],
@@ -9,7 +9,7 @@ const fldTypes = {
 	"7":["dbDouble","float8"],
 	"8":["dbDate",""],
 	"9":["dbBinary",""],
-	"10":["dbText","varchar"],
+	"10":["dbText","text"],
 	"11":["dbLongBinary",""],
 	"12":["dbMemo","text"],
 	"15":["dbGUID",""],
@@ -34,5 +34,3 @@ const fldTypes = {
 	"108":["dbComplexDecimal",""],
 	"109":["dbComplexText",""],
 };
-
-module.exports = {fldTypes}; 

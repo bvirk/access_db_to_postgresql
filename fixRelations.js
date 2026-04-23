@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const {pl} = require('./comUtils.js');
+const pl = (...msg) => console.log(...msg);
 
 pl(`#Rearrange relation\n\n`);
 
