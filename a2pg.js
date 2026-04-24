@@ -116,15 +116,15 @@ allowZeroLength: false      non_empty_text
 
 
 function syncTable(jflds) {
-  console.log(jflds);
   const hasApostrophe = /'/;
   const apostrophPattern = /'/g;
 
-  let typeNames = [];
-  let isAutoNumber = [];
-  let isTextFld = [];
-  let surCharOfFldNum = [];
-  let sqlLines = [];
+  const typeNames = [];
+  const isAutoNumber = [];
+  const isTextFld = [];
+  const isBoolean = [];
+  const surCharOfFldNum = [];
+  const sqlLines = [];
 
   let sqlIns = `insert into ${jflds.table}(`;
 
@@ -134,12 +134,13 @@ function syncTable(jflds) {
 
     jflds.fields.forEach(item => {
 
-      let [typeName, hasQuote, isTextField] = [
+      let [typeName, hasQuote, isTextField, isBoolField] = [
         fldTypes[item.type][1].length
           ? fldTypes[item.type][1]
           : fldTypes[item.type][0],
         [10, 12, 80, 81, 82].includes(item.type),
-        [10, 12].includes(item.type)
+        [10, 12].includes(item.type),
+        fldTypes[item.type][1] === "boolean"
       ];
       
       if ((item.type === 10 || item.type === 12)  && !item.allowZeroLength)
@@ -149,6 +150,7 @@ function syncTable(jflds) {
       typeNames.push(typeName);
       isAutoNumber.push(item.isAutoInc);
       isTextFld.push(isTextField);
+      isBoolean.push(isBoolField);
       surCharOfFldNum.push(hasQuote ? "'" : '');
 
 
@@ -195,6 +197,8 @@ function syncTable(jflds) {
             selFld = selFld.replace(apostrophPattern, "''");
           }
         }
+        if (isBoolean[i])
+          selFld = selFld ? "'1'" : "'0'";
 
         sqlInsLine += `${surChar}${selFld}${surChar}`;
       }
